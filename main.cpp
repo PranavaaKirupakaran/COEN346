@@ -7,8 +7,9 @@
 
 #include <unistd.h>
 //#include "Process.cpp"
-#include "ProcessQueue.cpp"
+//#include "ProcessQueue.cpp"
 //#include "Clock.hpp"
+#include "Scheduler.cpp"
 #include <iostream>
 #include <stdio.h>
 #include <fstream>
@@ -33,23 +34,29 @@ Clock* timer = new Clock();
 int main(){
 
     startUp();
-    int startclk, endclk = 0;
-    
+    Scheduler s;
+
     processList.front()->setClock(timer);
     thread th2(&Clock::startClock, timer);
-    sleepScheduler(100);
+    sleepScheduler(1000);
     processList.front()->setState("STARTED");
     thread th(&Process::execute,processList.front());
-    sleepScheduler(100);
+    sleepScheduler(1000);
     processList.front()->setState("PAUSED");
-    sleepScheduler(100);
+    sleepScheduler(1000);
     processList.front()->setState("RESUMED");
-    sleepScheduler(150);
+    sleepScheduler(1500);
     processList.front()->setState("PAUSED");
     timer->setStartFlag(false);
 
     th.join();
     th2.join();
+    
+    
+    //s.addProcess(processList.front());
+    //s.addProcess(processList.back());
+
+    //s.schedule();
     
 
 }
